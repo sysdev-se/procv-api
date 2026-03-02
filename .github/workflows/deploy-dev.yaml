@@ -44,7 +44,7 @@ jobs:
       - name: Build native image with Spring Boot buildpacks
         run: |
           IMAGE="${GCP_REGION}-docker.pkg.dev/procv-dev-000001/${ARTIFACT_REPO}/procv-api:${GITHUB_SHA}"
-          ./mvnw -Pnative spring-boot:build-image \
+          BP_JVM_VERSION=25 ./mvnw -Pnative spring-boot:build-image \
             -Dspring-boot.build-image.imageName="$IMAGE"
 
       - name: Push image
