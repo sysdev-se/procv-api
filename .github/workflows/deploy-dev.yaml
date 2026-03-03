@@ -21,11 +21,12 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Set up JDK 21 (Corretto)
+      - name: Set up JDK 25 (GraalVM)
         uses: actions/setup-java@v4
         with:
-          distribution: 'corretto'
-          java-version: '21'
+          distribution: 'graalvm'
+          java-version: '25'
+          cache: 'maven'
 
       - name: Auth to Google Cloud
         uses: google-github-actions/auth@v2
@@ -44,7 +45,7 @@ jobs:
       - name: Build native image with Spring Boot buildpacks
         run: |
           IMAGE="${GCP_REGION}-docker.pkg.dev/procv-dev-000001/${ARTIFACT_REPO}/procv-api:${GITHUB_SHA}"
-          ./mvnw spring-boot:build-image \
+          ./mvnw -Pnative spring-boot:build-image \
             -Dspring-boot.build-image.imageName="$IMAGE"
 
       - name: Push image
